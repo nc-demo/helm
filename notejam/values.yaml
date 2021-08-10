@@ -1,0 +1,125 @@
+# Default values for notejam.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+image:
+  repository: 441604169807.dkr.ecr.eu-west-1.amazonaws.com/notejam
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: latest
+
+imagePullSecrets: [
+    name: nc-demo
+]
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+#  type: ClusterIP
+  type: LoadBalancer
+  port: 80
+
+ingress:
+  enabled: false
+#  annotations: {}
+#    # kubernetes.io/ingress.class: nginx
+#    # kubernetes.io/tls-acme: "true"
+#  hosts:
+#    - host: notejam.local
+#      paths:
+#      - path: /
+#        backend:
+#          serviceName: notejam.local
+#          servicePort: 80
+#  tls: []
+#  #  - secretName: chart-example-tls
+#  #    hosts:
+#  #      - chart-example.local
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 1
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+deploy:
+  ## Application properties file for configuring the Quarkus app
+  applicationProperties:
+    ## Determines if application properties should be created in a configmap and mounted to the Quarkus container
+    enabled: true
+    ## Location to mount the properties file
+    mountPath: /deployments/config/
+    ## Application properties file contents
+    properties: |-
+      ## Properties go here
+      quarkus.mongodb.connection-string: jdbc:postgresql://localhost:5432/
+      quarkus.mongodb.credentials.username: notejam
+      quarkus.mongodb.credentials.password: notejam
+
+  ## Freeform Liveness Probe. More information: https://docs.openshift.com/container-platform/4.6/applications/application-health.html#application-health-about_application-health
+  livenessProbe:
+    httpGet:
+      path: /health
+      port: http
+    initialDelaySeconds: 60
+    periodSeconds: 30
+  ## If you don't want a livenessProbe, override like this in your values file
+  # livenessProbe: ''
+
+
+  ## Freeform Readiness Probe. More information: https://docs.openshift.com/container-platform/4.6/applications/application-health.html#application-health-about_application-health
+  readinessProbe:
+    httpGet:
+      path: /health
+      port: http
+    initialDelaySeconds: 60
+    periodSeconds: 30
+  ## If you don't want a readinessProbe, override like this in your values file
+  # readinessProve: ''
+
+  ports:
+    targetPort: 8080
+
