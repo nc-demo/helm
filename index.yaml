@@ -3,6 +3,16 @@ entries:
   notejam:
   - apiVersion: v2
     appVersion: 0.1.0
+    created: "2021-08-12T12:54:32.663258621Z"
+    description: notejam helm chart
+    digest: 7a2a3dcf037af97bf8e6a2642d0706522b4eede28efb8f7593d12b74cd975404
+    name: notejam
+    type: application
+    urls:
+    - https://github.com/nc-demo/helm/releases/download/notejam-0.1.1/notejam-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 0.1.0
     created: "2021-08-11T09:22:51.112002829Z"
     description: notejam helm chart
     digest: 3aaee20e12df4dc51ebcbebc8b02026f516e46bb85e1a1a7e30dbc5e4158e899
@@ -11,4 +21,4 @@ entries:
     urls:
     - https://github.com/nc-demo/helm/releases/download/notejam-0.1.0/notejam-0.1.0.tgz
     version: 0.1.0
-generated: "2021-08-11T09:22:51.112007929Z"
+generated: "2021-08-12T12:54:32.663265721Z"
