@@ -47,6 +47,11 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            {{- if .Values.deploy.applicationProperties.enabled }}
+            - name: SPRING_CONFIG_LOCATION
+              mountPath: {{ .Values.deploy.applicationProperties.mountPath }}
+            {{- end }}
           volumeMounts:
             {{- if .Values.deploy.applicationProperties.enabled }}
             - name: application-properties
